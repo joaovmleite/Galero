@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en-GB" itemscope itemtype="https://schema.org/WebApplication">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="author" content="Galero © 2025" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Galero</title>
+    <!-- Fontawesome CDN -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
+      integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <!-- Google Fonts / Livvic -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Livvic:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- GSAP CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <!-- CSS Styling -->
+    <link
+      rel="stylesheet"
+      href="./public/assets/css/style.css"
+      type="text/css"
+    />
+  </head>
+
+  <body>
+    <header class="section-header" aria-label="Header Section">
+      <div class="component-header" aria-label="Header Component">
+        <h1 class="header-title" aria-label="Galero Title">Galero</h1>
+        <input
+          type="text"
+          class="galero-search"
+          placeholder="Search by Animals, Nature, People, Business, Travel, etc."
+          aria-label="Galero Search"
+        />
+      </div>
+    </header>
+
+    <main class="section-main" aria-label="Main Section">
+      <div class="component-main" aria-label="Main Component">
+        <div class="images-first-row">
+          <div
+            class="component-image-main"
+            aria-label="Image provided by Unsplash"
+          ></div>
+          <div
+            class="component-image-main"
+            aria-label="Image provided by Unsplash"
+          ></div>
+          <div
+            class="component-image-main"
+            aria-label="Image provided by Unsplash"
+          ></div>
+        </div>
+        <div class="images-second-row">
+          <div
+            class="component-image-main"
+            aria-label="Image provided by Unsplash"
+          ></div>
+          <div
+            class="component-image-main"
+            aria-label="Image provided by Unsplash"
+          ></div>
+          <div
+            class="component-image-main"
+            aria-label="Image provided by Unsplash"
+          ></div>
+        </div>
+        <hr class="section-divider" aria-hidden="true" />
+      </div>
+      <div class="component-footer-main">
+        <span id="terms-of-usage" style="cursor: pointer;" aria-label="Terms of Usage Link"
+          >Terms of Usage & Privacy Policy</span
+        >
+        <span aria-label="Copyright © Galero 2025">
+          Powered by
+          <a
+            href="https://unsplash.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Unsplash</a
+          >
+          / Copyright © Galero 2025
+        </span>
+      </div>
+    </main>
+
+    <div id="palette-modal" class="palette-modal" aria-hidden="true">
+      <div class="palette-backdrop" data-close="1"></div>
+      <div
+        class="palette-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Color palette"
+      >
+        <button
+          class="palette-close"
+          type="button"
+          aria-label="Close palette"
+          data-close="1"
+        >
+          &times;
+        </button>
+        <div class="palette-header">
+          <div class="palette-preview" aria-hidden="true"></div>
+          <div class="palette-title">Extracted Palette</div>
+        </div>
+        <div class="palette-grid" aria-live="polite"></div>
+        <div class="palette-hint">Click a color to copy its RGB value</div>
+        <div class="palette-toast" aria-live="polite" aria-atomic="true"></div>
+      </div>
+    </div>
+
+    <div id="terms-modal" class="terms-modal" aria-hidden="true">
+      <div class="terms-backdrop" data-close="1"></div>
+      <div
+        class="terms-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Terms of Use"
+      >
+        <div class="terms-scroll">
+          <article class="terms-content" aria-live="polite"></article>
+          <article class="terms-content" aria-live="polite">
+            <h1 style="font-weight: 500; text-align: center;">Galero — Terms of Usage</h1>
+            <p><strong>Effective Date:</strong> 20 August 2025</p>
+            <p>
+              Please read these Terms of Use ("Terms", "Terms of Use") carefully
+              before using the Galero web application (the "Service", "App")
+              operated by us. By accessing or using the Service, you agree to be
+              bound by these Terms. If you do not agree with any part of the
+              Terms, you must not use the Service.
+            </p>
+            <hr />
+            <h2>1. Use of the Service</h2>
+            <p>
+              Galero is provided to you free of charge for personal and
+              non-commercial use. The core functionality allows users to:
+            </p>
+            <ul>
+              <li>Search for images via the Unsplash API;</li>
+              <li>Extract colour palettes from selected images.</li>
+            </ul>
+            <p>
+              All images are provided by Unsplash and are subject to
+              <a
+                href="https://unsplash.com/terms"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Unsplash's Terms</a
+              >.
+            </p>
+            <hr />
+            <h2>2. No Data Collection</h2>
+            <p>
+              We are firmly committed to privacy and minimal data processing.
+              Therefore, we do <strong>not</strong> collect or store any
+              personal information from our users. This includes but is not limited to:
+            </p>
+            <ul>
+              <li>IP addresses</li>
+              <li>Geolocation data</li>
+              <li>Search queries</li>
+              <li>Browser/device information</li>
+              <li>Cookies or tracking technologies</li>
+            </ul>
+            <p>
+              Galero does not implement analytics, tracking, or third-party data
+              collection scripts. Your use of the application remains entirely
+              anonymous and private.
+            </p>
+            <hr />
+            <h2>3. External Content</h2>
+            <p>
+              Images and image-related data are provided via the Unsplash API.
+              Galero does not host or control this content. We do not guarantee
+              the accuracy, copyright status, or availability of any third-party
+              content accessed through the Service.
+            </p>
+            <hr />
+            <h2>4. Limitation of Liability</h2>
+            <p>
+              The Service is provided on an “as is” and “as available” basis. We
+              make no warranties, expressed or implied, and hereby disclaim all
+              other warranties, including without limitation, implied warranties
+              of merchantability and fitness for a particular purpose. In no event shall we be liable for any damages arising out of or
+              in connection with the use or inability to use the Service.
+            </p>
+            <hr />
+            <h2>5. Modifications</h2>
+            <p>
+              We reserve the right to modify or replace these Terms at any time.
+              Any changes will be posted on this page, and your continued use of
+              the Service following the posting of changes constitutes
+              acceptance of those changes.
+            </p>
+            <hr />
+            <h2>6. Contact</h2>
+            <p>
+              If you have any questions about these Terms, you may reach out to
+              us via the application's official communication channel (to be
+              provided, if applicable).
+            </p>
+            <hr />
+            <p>Thank you for using Galero.</p>
+          </article>
+        </div>
+      </div>
+    </div>
+
+
+    <script src="./public/assets/js/script.js" defer></script>
+  </body>
+</html>

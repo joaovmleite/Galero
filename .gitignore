@@ -1,0 +1,4 @@
+docs/
+.env
+.local.env
+node_modules/

@@ -1,0 +1,391 @@
+/*
+ * Updated CSS for improved mobile responsiveness.
+ *
+ * This version includes:
+ * - A more compact search bar on small screens.
+ * - A responsive grid layout for image fields that changes from two columns
+ * to a single column on smaller screens.
+ */
+
+ :root {
+  --bg-main: hsl(0, 0%, 100%);
+  --color-primary: hsl(0, 0%, 14%);
+}
+
+*, *::before, *::after {
+  font-family: 'Livvic', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ===== Background Pattern ===== */
+body {
+  background-color: #ffffff;
+  background-image: url("data:image/svg+xml,%3Csvg width='84' height='48' viewBox='0 0 84 48' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h12v6H0V0zm28 8h12v6H28V8zm14-8h12v6H42V0zm14 0h12v6H56V0zm0 8h12v6H56V8zM42 8h12v6H42V8zm0 16h12v6H42v-6zm14-8h12v6H56v-6zm14 0h12v6H70v-6zm0-16h12v6H70V0zM28 32h12v6H28v-6zM14 16h12v6H14v-6zM0 24h12v6H0v-6zm0 8h12v6H0v-6zm14 0h12v6H14v-6zm14 8h12v6H28v-6zm-14 0h12v6H14v-6zm28 0h12v6H42v-6zm14-8h12v6H56v-6zm0-8h12v6H56v-6zm14 8h12v6H70v-6zm0 8h12v6H70v-6zM14 24h12v6H14v-6zm14-8h12v6H28v-6zM14 8h12v6H14V8zM0 8h12v6H0V8z' fill='%238e8b92' fill-opacity='0.06' fill-rule='evenodd'/%3E%3C/svg%3E");
+}
+
+/* ===== Component Header ===== */
+.section-header {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 12px 16px;
+}
+
+.component-header {
+  display: flex;
+  gap: 1.636rem;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.component-header > .header-title {
+  font-weight: 300;
+  font-family: 'Livvic';
+  font-size: 2.956rem;
+  color: var(--color-primary);
+}
+
+.component-header > .galero-search {
+  flex: 1 1 280px;
+  min-width: 220px;
+  max-width: 680px;
+  border-radius: 4px;
+  border: 1px solid hsla(0, 0%, 14%, 0.376);
+  padding: 0.55rem 0.7rem;
+  outline: none;
+  font-size: 1rem;
+  margin-top: 6px;
+}
+
+/* ===== Component Main ===== */
+.section-main {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px 32px;
+}
+
+.images-first-row, .images-second-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 18px;
+  align-items: stretch;
+  margin-top: 21px;
+  margin-bottom: 21px;
+}
+
+.component-image-main {
+  background-color: hsl(0, 9%, 96%);
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  min-height: 140px;
+  border-radius: 4px;
+  border: 1px solid hsla(0, 0%, 14%, 0.376);
+  transition: transform 200ms ease;
+  transform-origin: center;
+  cursor: zoom-in;
+  position: relative;
+  overflow: hidden;
+  perspective: 800px;
+}
+
+.component-image-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  border-radius: inherit;
+}
+
+.component-image-face {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.component-image-face.front img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.component-image-face.back {
+  transform: rotateY(180deg);
+  background: linear-gradient(180deg, #f8f8f8, #ededed);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 1fr;
+  gap: 6px;
+  padding: 8px;
+}
+
+.palette-swatch {
+  border-radius: 3px;
+  border: 1px solid rgba(0,0,0,0.08);
+}
+
+.component-image-inner.shadow {
+  filter: drop-shadow(0 6px 10px rgba(0,0,0,0.18));
+}
+
+.component-image-main.rainbow-border::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(
+    from var(--rb-angle, 0deg),
+    #ff0040,
+    #ff8000,
+    #ffd400,
+    #35e000,
+    #00d5ff,
+    #0066ff,
+    #8e00ff,
+    #ff0040
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Divider styling */
+.section-divider {
+  border: none;
+  height: 1px;
+  width: 100%;
+  margin: 12px 0 6px;
+  background: linear-gradient(to right, transparent, hsla(0,0%,14%,0.25), transparent);
+}
+
+.component-footer-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 21px;
+}
+
+.component-footer-main #terms-of-usage {
+  text-decoration: underline;
+}
+
+/* Divider styling */
+.section-divider {
+  border: none;
+  height: 1px;
+  width: 100%;
+  margin: 12px 0 6px;
+  background: linear-gradient(to right, transparent, hsla(0,0%,14%,0.25), transparent);
+}
+
+/* ===== Palette Modal ===== */
+.palette-modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+}
+
+.palette-modal[aria-hidden="false"] {
+  display: block;
+}
+
+.palette-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  opacity: 0;
+}
+
+.palette-dialog {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(640px, calc(100% - 32px));
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,0.1);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.25);
+  opacity: 0;
+  padding: 16px;
+}
+
+.palette-close {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  font-size: 22px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.palette-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.palette-preview {
+  width: 42px;
+  height: 42px;
+  border-radius: 6px;
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
+.palette-title {
+  font-weight: 600;
+}
+
+.palette-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.palette-swatch {
+  border-radius: 6px;
+  height: 64px;
+  border: 1px solid rgba(0,0,0,0.1);
+  cursor: pointer;
+  position: relative;
+}
+
+.palette-swatch::after {
+  content: attr(data-rgb);
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  font-size: 11px;
+  padding: 2px 6px;
+  background: rgba(255,255,255,0.8);
+  border-radius: 3px;
+  color: #222;
+}
+
+.palette-hint {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: #444;
+}
+
+.palette-toast {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 12px;
+  background: rgba(0,0,0,0.8);
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ===== Palette Modal ===== */
+.palette-modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+}
+
+/* ===== Terms Modal ===== */
+.terms-modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+}
+
+.terms-modal[aria-hidden="false"] {
+  display: block;
+}
+
+.terms-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  opacity: 0;
+}
+
+.terms-dialog {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(820px, calc(100% - 32px));
+  max-height: min(78vh, 820px);
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,0.1);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.25);
+  opacity: 0;
+  overflow: hidden;
+}
+
+.terms-scroll {
+  overflow: auto;
+  max-height: inherit;
+  padding: 18px 18px 24px;
+}
+
+.terms-content h1,
+.terms-content h2,
+.terms-content h3 {
+  margin: 10px 0 8px;
+}
+
+.terms-content p,
+.terms-content li {
+  line-height: 1.55;
+  color: #222;
+}
+
+.terms-content ul {
+  margin-left: 18px;
+}
+
+.terms-content hr {
+  margin: 14px 0;
+}
+
+
+@media (max-width: 560px) {
+  /* Make the search bar not attempt to flex-grow beside the title */
+  .component-header > .galero-search {
+    flex: none;
+    width: 100%;
+    margin-top: -18px;
+  }
+
+  /* Stack image tiles in a single column (one below the other) */
+  .images-first-row,
+  .images-second-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+    align-items: stretch;
+    margin-top: 21px;
+    margin-bottom: 21px;
+  }
+
+  .component-footer-main {
+    display: flex;
+    gap: 6px;
+    flex-direction: column;
+  }
+}
