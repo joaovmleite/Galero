@@ -116,7 +116,6 @@
       gsap.to(dialog, { opacity: 1, duration: 0.25, delay: 0.05 });
     };
 
-    // Close actions
     modal?.addEventListener("click", (e) => {
       if (e.target instanceof HTMLElement && e.target.dataset.close === "1") {
         closeModal();
@@ -126,7 +125,7 @@
       if (e.key === "Escape" && modal?.getAttribute("aria-hidden") === "false") closeModal();
     });
 
-    // ===== Palette helpers (based on temporary/vibrant.code.txt) =====
+    // ===== Palette helpers =====
     const getColorDistance = (c1, c2) => {
       const dr = c1[0] - c2[0];
       const dg = c1[1] - c2[1];
@@ -292,9 +291,6 @@
     if (searchInput) {
       searchInput.addEventListener("keydown", (e) => {
         if (e.key === "Enter") {
-          // Mark this value as the last-submitted query to prevent the blur handler
-          // from immediately re-triggering a search (which re-renders slots and
-          // cancels the first image click, causing a perceived "double-click").
           last = searchInput.value;
           searchAndRender(searchInput.value);
         }
