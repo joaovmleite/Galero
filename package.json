@@ -2,7 +2,8 @@
   "name": "galero",
   "version": "1.0.0",
   "scripts": {
-    "dev": "netlify dev"
+    "dev": "netlify dev",
+    "start": "node index.js"
   },
   "dependencies": {
     "axios": "^1.11.0",
