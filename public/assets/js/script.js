@@ -56,6 +56,7 @@
     const grid = modal?.querySelector(".palette-grid");
     const preview = modal?.querySelector(".palette-preview");
     const toast = modal?.querySelector(".palette-toast");
+    let lastFocusedElement = null;
 
     const closeModal = () => {
       if (!modal) return;
@@ -65,45 +66,70 @@
         onComplete: () => {
           modal.setAttribute("aria-hidden", "true");
           grid.innerHTML = "";
+          // Return focus to the element that opened the modal
+          if (lastFocusedElement) {
+            lastFocusedElement.focus();
+          }
         },
       });
     };
 
     const openModal = (colors = [], previewColor = null) => {
       if (!modal) return;
+      // Store the currently focused element
+      lastFocusedElement = document.activeElement;
       modal.setAttribute("aria-hidden", "false");
       // Build grid
       grid.innerHTML = "";
       const total = Math.max(colors.length, 8);
       for (let i = 0; i < total; i++) {
         const rgb = colors[i] || `hsl(0,0%,${72 + i * 2}%)`;
-        const sw = document.createElement("div");
+        const sw = document.createElement("button"); // Changed from div to button for better accessibility
         sw.className = "palette-swatch";
         sw.style.background = rgb;
         sw.dataset.rgb = rgb;
-        sw.title = `Click to copy ${rgb}`;
-        sw.addEventListener("click", async () => {
+        sw.setAttribute("aria-label", `Color ${i + 1}: ${rgb}`);
+        sw.setAttribute("tabindex", "0");
+        
+        // Add keyboard event listener for Enter/Space
+        const handleKeyDown = (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            copyToClipboard(rgb);
+          }
+        };
+        
+        const copyToClipboard = async (color) => {
           try {
-            await navigator.clipboard.writeText(rgb);
-            if (toast) {
-              toast.textContent = `${rgb} copied`;
-              gsap.killTweensOf(toast);
-              gsap.fromTo(
-                toast,
-                { opacity: 0 },
-                { opacity: 1, duration: 0.15, yoyo: true, repeat: 1, repeatDelay: 0.9 }
-              );
-            }
+            await navigator.clipboard.writeText(color);
+            showToast(`${color} copied`);
           } catch (_) {
             // Fallback copy
             const ta = document.createElement("textarea");
-            ta.value = rgb;
+            ta.value = color;
             document.body.appendChild(ta);
             ta.select();
             document.execCommand("copy");
             ta.remove();
+            showToast(`${color} copied`);
           }
-        });
+        };
+        
+        const showToast = (message) => {
+          if (toast) {
+            toast.textContent = message;
+            gsap.killTweensOf(toast);
+            gsap.fromTo(
+              toast,
+              { opacity: 0 },
+              { opacity: 1, duration: 0.15, yoyo: true, repeat: 1, repeatDelay: 0.9 }
+            );
+          }
+        };
+        
+        sw.addEventListener("click", () => copyToClipboard(rgb));
+        sw.addEventListener("keydown", handleKeyDown);
+        
         grid.appendChild(sw);
       }
       // Preview color
@@ -113,7 +139,13 @@
       // Animate in
       gsap.set([dialog, backdrop], { opacity: 0 });
       gsap.to(backdrop, { opacity: 1, duration: 0.2 });
-      gsap.to(dialog, { opacity: 1, duration: 0.25, delay: 0.05 });
+      gsap.to(dialog, { opacity: 1, duration: 0.25, delay: 0.05, 
+        onComplete: () => {
+          // Focus the first swatch when modal opens
+          const firstSwatch = grid.querySelector('.palette-swatch');
+          if (firstSwatch) firstSwatch.focus();
+        }
+      });
     };
 
     modal?.addEventListener("click", (e) => {
@@ -176,6 +208,9 @@
     const prepareSlot = (slot, photo) => {
       // Clear slot and place image
       slot.innerHTML = "";
+      slot.setAttribute("role", "button");
+      slot.setAttribute("aria-label", photo.alt_description || photo.description || "Photo from Unsplash");
+      slot.setAttribute("tabindex", "0");
 
       const img = document.createElement("img");
       img.crossOrigin = "anonymous";
@@ -187,6 +222,7 @@
       img.style.height = "100%";
       img.style.objectFit = "cover";
       img.style.display = "block";
+      img.setAttribute("aria-hidden", "true");
 
       slot.appendChild(img);
 
@@ -206,8 +242,8 @@
       if (img.complete) ensurePalette();
       else img.addEventListener("load", ensurePalette, { once: true });
 
-      // Click to open modal with cached palette (or placeholders)
-      slot.addEventListener("click", () => {
+      // Click or keyboard to open modal with cached palette (or placeholders)
+      const openPaletteModal = () => {
         const colors = Array.isArray(slot.__palette) ? slot.__palette : [];
         openModal(colors, slot.__preview || null);
         // If not ready, try to compute now and update grid when ready
@@ -217,6 +253,14 @@
               openModal(slot.__palette, slot.__preview || null);
             }
           });
+        }
+      };
+
+      slot.addEventListener("click", openPaletteModal);
+      slot.addEventListener("keydown", (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openPaletteModal();
         }
       });
 
@@ -339,6 +383,53 @@
         closeTerms();
       }
     });
+
+    // Handle Escape key to close modal
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        if (modal?.getAttribute("aria-hidden") === "false") {
+          closeModal();
+        } else if (termsModal?.getAttribute("aria-hidden") === "false") {
+          closeTerms();
+        }
+      }
+    });
+
+    // Handle tab key in modals to trap focus
+    const trapFocus = (element) => {
+      const focusableElements = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+      const firstFocusableElement = element.querySelectorAll(focusableElements)[0];
+      const focusableContent = element.querySelectorAll(focusableElements);
+      const lastFocusableElement = focusableContent[focusableContent.length - 1];
+
+      element.addEventListener('keydown', function(e) {
+        let isTabPressed = e.key === 'Tab';
+
+        if (!isTabPressed) {
+          return;
+        }
+
+        if (e.shiftKey) {
+          if (document.activeElement === firstFocusableElement) {
+            lastFocusableElement.focus();
+            e.preventDefault();
+          }
+        } else {
+          if (document.activeElement === lastFocusableElement) {
+            firstFocusableElement.focus();
+            e.preventDefault();
+          }
+        }
+      });
+    };
+
+    // Initialize focus trap for modals
+    if (modal) {
+      trapFocus(modal);
+    }
+    if (termsModal) {
+      trapFocus(termsModal);
+    }
   };
 
   if (document.readyState === "loading") {
